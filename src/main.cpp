@@ -14,7 +14,6 @@ enum class TokenType {
     Modulo,
     Print,
     Comma,
-    Comment,
     EndOfFile,
     Unknown,
 };
@@ -72,16 +71,9 @@ public:
         }
 
         if(current == ';') {
-            advance();
-            skipWhitespaces();
-
-            std::string commentStr = "";
-
             while(pos < source.length() && peek() != '\n' && peek() != '\r') {
-                commentStr += advance();
+                advance();
             }
-
-            return {TokenType::Comment, commentStr};
         }
 
         if(current == '0' && tolower(peekNext()) == 'x') {

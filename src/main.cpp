@@ -77,7 +77,7 @@ public:
 
             std::string commentStr = "";
 
-            while(pos < source.length()) {
+            while(pos < source.length() && peek() != '\n' && peek() != '\r') {
                 commentStr += advance();
             }
 

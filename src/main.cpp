@@ -49,6 +49,14 @@ private:
         }
     }
 
+    void skipComments() {
+        if(peek() == ';') {
+            while(pos < source.length() && peek() != '\n' && peek() != '\r') {
+                advance();
+            }
+        }
+    }
+
     bool isValidHexChar(char c) {
         return isdigit(c) || (tolower(c) >= 'a' && tolower(c) <= 'f');
     }
@@ -57,6 +65,8 @@ public:
     Lexer(std::string code) : source(code) {}
 
     Token nextToken() {
+        skipWhitespaces();
+        skipComments();
         skipWhitespaces();
 
         if(pos >= source.length()) {
@@ -68,12 +78,6 @@ public:
         if(current == ',') {
             advance();
             return {TokenType::Comma, ","};
-        }
-
-        if(current == ';') {
-            while(pos < source.length() && peek() != '\n' && peek() != '\r') {
-                advance();
-            }
         }
 
         if(current == '0' && tolower(peekNext()) == 'x') {

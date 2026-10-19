@@ -1,3 +1,4 @@
+#include <cctype>
 #include <cstddef>
 #include <iostream>
 #include <string>
@@ -55,6 +56,82 @@ private:
 
 public:
     Lexer(std::string code) : source(code) {}
+
+    Token nextToken() {
+        skipWhitespaces();
+
+        if(pos >= source.length()) {
+            return {TokenType::EndOfFile, ""};
+        }
+
+        char current = peek();
+
+        if(current == ',') {
+            advance();
+            return {TokenType::Comma, ","};
+        }
+
+        if(current == ';') {
+            advance();
+            skipWhitespaces();
+
+            std::string commentStr = "";
+
+            while(pos < source.length()) {
+                commentStr += advance();
+            }
+
+            return {TokenType::Comment, commentStr};
+        }
+
+        if(isdigit(current)) {
+            std::string numStr = "";
+            int countComma = 0;
+
+            while(pos < source.length() && (isdigit(peek()) || peek() == '.')) {
+                if(peek() == '.') countComma++;
+                numStr += advance();
+            }
+
+            if(countComma == 0) numStr += ".0";
+
+            if(countComma <= 1) return {TokenType::Number, numStr};
+            else return {TokenType::Unknown, numStr};
+        }
+
+        if(current == '0' && tolower(peekNext()) == 'x') {
+            advance();
+
+            std::string regAddrStr = "0";
+            regAddrStr += advance();
+
+            while(pos < source.length() && isValidHexChar(peek())) {
+                regAddrStr += advance();
+            }
+
+            return {TokenType::RegAddress, regAddrStr};
+        }
+
+        if(isalpha(current)) {
+            std::string str = "";
+
+            while(pos < source.length() && isalpha(peek())) {
+                str += advance();
+            }
+
+            if(str == "assgn") return {TokenType::Assign, str};
+            else if(str == "add") return {TokenType::Add, str};
+            else if(str == "subtr") return {TokenType::Subtract, str};
+            else if(str == "multi") return {TokenType::Multiply, str};
+            else if(str == "div") return {TokenType::Divide, str};
+            else if(str == "mod") return {TokenType::Modulo, str};
+            else if(str == "print") return {TokenType::Print, str};
+            else return {TokenType::Unknown, str};
+        }
+
+        std::string unk(1, current);
+        return {TokenType::Unknown, unk};
+    }
 };
 
 int main() {

@@ -84,6 +84,19 @@ public:
             return {TokenType::Comment, commentStr};
         }
 
+        if(current == '0' && tolower(peekNext()) == 'x') {
+            advance();
+
+            std::string regAddrStr = "0";
+            regAddrStr += advance();
+
+            while(pos < source.length() && isValidHexChar(peek())) {
+                regAddrStr += advance();
+            }
+
+            return {TokenType::RegAddress, regAddrStr};
+        }
+
         if(isdigit(current)) {
             std::string numStr = "";
             int countComma = 0;
@@ -97,19 +110,6 @@ public:
 
             if(countComma <= 1) return {TokenType::Number, numStr};
             else return {TokenType::Unknown, numStr};
-        }
-
-        if(current == '0' && tolower(peekNext()) == 'x') {
-            advance();
-
-            std::string regAddrStr = "0";
-            regAddrStr += advance();
-
-            while(pos < source.length() && isValidHexChar(peek())) {
-                regAddrStr += advance();
-            }
-
-            return {TokenType::RegAddress, regAddrStr};
         }
 
         if(isalpha(current)) {

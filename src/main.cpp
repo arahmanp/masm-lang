@@ -14,6 +14,8 @@ enum class TokenType {
     Print,
     Comma,
     Comment,
+    EndOfFile,
+    Unknown,
 };
 
 struct Token {

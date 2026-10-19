@@ -55,6 +55,7 @@ private:
                 advance();
             }
         }
+        skipWhitespaces();
     }
 
     bool isValidHexChar(char c) {
@@ -67,7 +68,6 @@ public:
     Token nextToken() {
         skipWhitespaces();
         skipComments();
-        skipWhitespaces();
 
         if(pos >= source.length()) {
             return {TokenType::EndOfFile, ""};

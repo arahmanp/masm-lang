@@ -49,6 +49,10 @@ private:
         }
     }
 
+    bool isValidHexChar(char c) {
+        return isdigit(c) || (tolower(c) >= 'a' && tolower(c) <= 'f');
+    }
+
 public:
     Lexer(std::string code) : source(code) {}
 };

@@ -96,6 +96,7 @@ public:
             return {TokenType::Comma, ","};
         }
 
+        // ! 0x is still valid here
         if(current == '0' && tolower(peekNext()) == 'x') {
             advance();
 
@@ -109,6 +110,7 @@ public:
             return {TokenType::RegAddress, regAddrStr};
         }
 
+        // ! 12. is still valid here
         if(isdigit(current)) {
             std::string numStr = "";
             int countComma = 0;

@@ -204,7 +204,7 @@ public:
         double val = value->eval(env);
 
         if(index >= MAX_REG) {
-            throw std::runtime_error("lu akses melebihi jumlah register anjing!\n");
+            throw std::runtime_error("lu akses melebihi jumlah register!\n");
         }
 
         env[index] = val;
@@ -234,7 +234,7 @@ public:
         size_t idxOperand2 = regOperand2->eval(env);
 
         if(idxDestination >= MAX_REG || idxOperand1 >= MAX_REG || idxOperand2 >= MAX_REG) {
-            throw std::runtime_error("lu akses melebihi jumlah register anjing!\n");
+            throw std::runtime_error("lu akses melebihi jumlah register!\n");
         }
 
         if(op == '+') env[idxDestination] = env[idxOperand1] + env[idxOperand2];
@@ -262,7 +262,7 @@ public:
         size_t index = regAddress->eval(env);
 
         if(index >= MAX_REG) {
-            throw std::runtime_error("lu akses melebihi jumlah register anjing!\n");
+            throw std::runtime_error("lu akses melebihi jumlah register!\n");
         }
 
         std::cout << env[index] << '\n';
